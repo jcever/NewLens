@@ -77,4 +77,6 @@ Provenance chain:
 4. Spring Boot's auto-configuration sees Jackson on the classpath and registers MappingJackson2HttpMessageConverter automatically.
 5. When your controller method returns HealthResponse, the DispatcherServlet picks the converter that matches the response's Accept header (defaults to application/json) and asks it
    to write the object to the response body.                                           
-                      
+
+What MockMvc does
+    MockMvc is a Spring helper that simulates HTTP without actually opening a network socket. It builds a fake HttpServletRequest, hands it to the Dispatcher Servlet, and lets you assert on the response.
