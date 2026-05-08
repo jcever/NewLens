@@ -1,49 +1,30 @@
 # Git Workflow
 
-Use Git every day as part of engineering, not as a separate topic. By the end of the month, branching and small commits should feel automatic.
+Use Git every day as part of engineering, not as a separate topic. By the end of the month, small commits and clear messages should feel automatic.
 
-## Basic Daily Flow
+## Default — Commit Directly To `main`
 
-1. create or switch to a feature branch
-2. make one small working change
-3. inspect `git diff`
-4. run the code or test what changed
-5. commit with a clear message
+For **solo work**, just commit on `main`:
+
+1. make one small working change
+2. inspect `git diff`
+3. run the code or test what changed
+4. `git add <specific files>` and `git commit -m "..."`
+5. `git push origin main`
 6. repeat
 
-## Recommended Branch Names
+No branch ceremony required. Branches exist for team workflows (PRs, code review, CI per branch). Solo, you don't need them by default.
 
-Backend (Java):
+## When To Use A Branch Anyway
 
-- `feature/health-endpoint`
-- `feature/news-search-api`
-- `feature/reddit-client`
-- `feature/hn-client`
-- `feature/user-registration`
-- `feature/jwt-auth`
-- `feature/search-history`
-- `feature/websocket-progress`
+Branches are a tool — reach for one only when you actually need isolation:
 
-Worker (Python):
+- a **risky experiment** you might throw away (`experiment/swap-postgres-for-mongo`)
+- a **multi-day refactor** where main needs to keep working
+- work you want to **stash and come back to later** without polluting main
+- a **public PR** to a team repo or open-source project
 
-- `feature/worker-scaffold`
-- `feature/sentiment-endpoint`
-- `feature/llm-summary`
-
-Frontend (TypeScript):
-
-- `feature/frontend-scaffold`
-- `feature/auth-pages`
-- `feature/search-page`
-- `feature/saved-searches-ui`
-- `feature/sentiment-chart`
-
-Cross-cutting:
-
-- `fix/login-validation`
-- `refactor/search-service`
-- `chore/docker-compose`
-- `docs/architecture-diagram`
+If none of those apply, commit on `main` and move on.
 
 ## Recommended Commit Style (Conventional Commits)
 
@@ -61,31 +42,34 @@ Cross-cutting:
 ## Commands To Practice Often
 
 ```bash
-git init
 git status
-git checkout -b feature/news-search-api
-git add path/to/file.java path/to/test.java   # prefer specific files over `git add .`
-git commit -m "feat(news): integrate news search service"
 git diff
 git diff --staged
+git add path/to/file.java path/to/test.java   # prefer specific files over `git add .`
+git commit -m "feat(news): integrate news search service"
+git push origin main
 git log --oneline --decorate --graph
 git restore --staged path/to/file       # unstage
 git restore path/to/file                 # discard local change (careful)
-git switch main && git merge --no-ff feature/...
 ```
 
-## What Good Git Habits Teach
+## When You Do Use A Branch
 
-- change isolation
-- clean thinking
-- review discipline
-- safe experimentation
-- collaboration readiness — every PR you ever open will be a small commit history
+Reference for the rare case you need one:
+
+```bash
+git checkout -b experiment/swap-db
+# ... commits ...
+git switch main
+git merge --no-ff experiment/swap-db    # --no-ff keeps the branching visible in history
+git branch -d experiment/swap-db
+git push origin main
+```
 
 ## Rules
 
 - do not make huge commits when smaller ones would work
 - read your diff before each commit
-- one feature branch per task — do not pile work on `main`
 - write commit messages that describe the change, not your mood
 - never `git add .` blindly — at minimum scan `git status` first
+- one logical change per commit (a refactor and a feature do not belong together)
