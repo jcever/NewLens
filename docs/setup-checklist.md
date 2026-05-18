@@ -42,7 +42,7 @@ Use this to verify your local environment before each phase. Don't try to instal
 
 - [x] repository initialized
 - [ ] first baseline commit created
-- [x] `daily-log.md` in use
+- [x] daily log in use (file kept outside the repo)
 - [x] `weekly-review.md` in use
 - [ ] feature branch naming in use
 - [ ] `.env` files in `.gitignore` and never committed

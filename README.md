@@ -55,7 +55,6 @@ By the end of the month the project has:
 - `docs/git-workflow.md` — daily Git habits
 - `docs/skill-checklist.md` — concepts to track
 - `docs/setup-checklist.md` — local environment requirements
-- `docs/daily-log.md` — short daily journal
 - `docs/weekly-review.md` — end-of-week reflection
 
 ## Execution Order

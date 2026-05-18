@@ -1,7 +1,7 @@
 # 30-Day Roadmap
 
 This roadmap is for a junior engineer pursuing depth in **Java**, **Python**, and **TypeScript** through one shippable full-stack project. The pacing assumes **~3 hours/day, every day**.
-
+ye
 ## Week 1 — Java, Spring Boot, HTTP, Git foundations
 
 ### Day 1 — Repo + Spring Boot scaffold
@@ -42,7 +42,7 @@ This roadmap is for a junior engineer pursuing depth in **Java**, **Python**, an
 ### Day 6 — Refactor + reflection
 
 - review week 1 code; rename and tighten boundaries
-- short note in `docs/daily-log.md` on what clicked
+- short note in your personal daily-log file on what clicked
 - commit goal: cleanup and notes
 
 ### Day 7 — Rest / read your own diff history
@@ -218,4 +218,4 @@ This roadmap is for a junior engineer pursuing depth in **Java**, **Python**, an
 - finish a vertical slice before adding another layer
 - no Twitter/X, no custom HTML scraping in v1
 - learn each concept deeply enough to explain it back
-- write a `daily-log.md` entry every day, even one line
+- write a daily-log entry every day, even one line (file kept outside the repo)
