@@ -24,20 +24,24 @@ ye
 - create a `NewsClient` service using `RestClient` (or `WebClient`)
 - study: HTTP clients, JSON mapping with Jackson
 - commit goal: external news API client prototype
+- note: tests for `NewsClient` + `SearchController` are backfilled at the start of Day 4 (the testing rule was introduced after Day 3 shipped)
 
 ### Day 4 — Article DTO + normalization
 
+- **backfill from Day 3:** `NewsClientTest` with Spring's `MockRestServiceServer`; `SearchControllerTest` with `@WebMvcTest(SearchController.class)` + `@MockBean NewsClient`
 - normalize provider-specific shapes into one internal `ArticleDto`
 - handle blank or invalid input
 - study: DTOs, validation (`@Valid`), exception handling
-- commit goal: normalized search response
+- test: unit test for the article mapper (Guardian raw → `ArticleDto`); `@NotBlank` on the query returns 400 with a clear error body
+- commit goal: normalized search response + tests
 
 ### Day 5 — Search endpoint
 
 - add `GET /api/search?q=...`
 - test with curl and a REST client
 - study: HTTP status codes, structured logging
-- commit goal: working keyword search endpoint
+- test: `@WebMvcTest` for the new endpoint — happy path, missing `q` → 400, provider error mapped to 502
+- commit goal: working keyword search endpoint + tests
 
 ### Day 6 — Refactor + reflection
 
@@ -63,28 +67,32 @@ ye
 - add `JpaRepository` for each entity
 - service methods for save/fetch search history
 - study: repository pattern, JPA lifecycle
-- commit goal: persistence layer
+- test: `@DataJpaTest` for one repository — verify save + find-by-user behavior against H2
+- commit goal: persistence layer + tests
 
 ### Day 10 — Registration + password hashing
 
 - `POST /api/auth/register`
 - BCrypt for password storage
 - study: authentication basics, password storage
-- commit goal: user registration
+- test: register response shape; assert the stored password is hashed, not equal to the plaintext input
+- commit goal: user registration + tests
 
 ### Day 11 — Login + JWT
 
 - `POST /api/auth/login` returns a JWT
 - protect saved-searches endpoints with a security filter
 - study: auth vs authorization, JWT vs sessions
-- commit goal: login + auth filter
+- test: wrong password → 401; valid login returns a structurally valid JWT; protected endpoint without a token → 401
+- commit goal: login + auth filter + tests
 
 ### Day 12 — Saved searches + history
 
 - `POST /api/searches`, `GET /api/searches`
 - user-scoped queries with ownership checks
 - study: service boundaries
-- commit goal: saved search history
+- test: user A cannot see or delete user B's saved searches
+- commit goal: saved search history + tests
 
 ### Day 13 — Reddit + Hacker News clients
 
@@ -92,12 +100,14 @@ ye
 - normalize into a shared `SocialPostDto` alongside `ArticleDto`
 - expand `/api/search` to fan out across news + Reddit + HN in parallel
 - study: parallel HTTP, virtual threads or `CompletableFuture`, per-source error isolation
-- commit goal: multi-source ingestion
+- test: each client in isolation with `MockRestServiceServer`; one source failing does not break the other sources (per-source error isolation)
+- commit goal: multi-source ingestion + tests
 
 ### Day 14 — Validation, error handling, week review
 
 - `@Valid` on inputs; global `@ControllerAdvice`
 - document API routes
+- test: `@ControllerAdvice` returns the expected JSON error-body shape for each handled exception type
 - commit goal: backend hardening + week 2 review
 
 ## Week 3 — TypeScript frontend + full-stack wiring
@@ -154,7 +164,8 @@ ye
 - `GET /health` on the worker
 - Java-side `WorkerClient` that calls it
 - study: FastAPI basics, Pydantic models
-- commit goal: Python worker scaffold
+- test: pytest for the worker's `/health`; Java-side `WorkerClient` test using `MockRestServiceServer`
+- commit goal: Python worker scaffold + tests
 
 ### Day 23 — Sentiment endpoint
 
@@ -162,7 +173,8 @@ ye
 - batch scoring; return per-item polarity
 - Java backend stores sentiment on `Article` rows
 - study: NLP basics, batching
-- commit goal: sentiment pipeline
+- test: pytest covers positive / negative / neutral text; empty batch returns empty list cleanly
+- commit goal: sentiment pipeline + tests
 
 ### Day 24 — LLM summary endpoint
 
@@ -170,7 +182,8 @@ ye
 - prompt receives keyword + top N articles
 - timeout, error fallback, cache by `(keyword, day)`
 - study: prompt design, latency, failure handling, cost awareness
-- commit goal: AI summary feature
+- test: pytest with mocked LLM client — verify cache hit on the second call; verify a timeout returns the fallback summary
+- commit goal: AI summary feature + tests
 
 ### Day 25 — Sentiment chart on dashboard
 
@@ -184,7 +197,8 @@ ye
 - emit `SEARCH_STARTED → FETCHING_ARTICLES → ANALYZING_SENTIMENT → SUMMARY_READY → SEARCH_COMPLETED`
 - frontend subscribes and shows live status
 - study: WebSocket lifecycle, reconnect basics
-- commit goal: real-time progress
+- test: connect a test client, run a search, assert the event sequence
+- commit goal: real-time progress + tests
 
 ### Day 27 — Bluesky source (stretch) + UX polish
 
@@ -192,12 +206,12 @@ ye
 - improve loading, empty, and error states
 - commit goal: UX polish
 
-### Day 28 — Tests
+### Day 28 — E2E test + coverage pass
 
-- JUnit tests for one Java service + one controller
-- pytest for the Python worker
-- one Playwright E2E if time allows
-- commit goal: initial tests
+- most slice / unit tests already exist from previous days
+- add **one Playwright E2E** covering: register → log in → search → see results
+- coverage pass: identify weakly-tested areas and add tests for whatever still feels fragile
+- commit goal: E2E test + coverage gaps closed
 
 ### Day 29 — Docker + deploy
 
@@ -216,6 +230,7 @@ ye
 
 - one feature branch per task; small commits
 - finish a vertical slice before adding another layer
+- **every feature day ships with at least one test for the new behavior** — written the same day, while the *why* is still in your head
 - no Twitter/X, no custom HTML scraping in v1
 - learn each concept deeply enough to explain it back
 - write a daily-log entry every day, even one line (file kept outside the repo)
