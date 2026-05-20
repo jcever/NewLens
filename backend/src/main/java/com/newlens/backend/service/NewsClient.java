@@ -15,10 +15,10 @@ public class NewsClient {
     private final RestClient restClient;
     private final String apiKey;
 
-    public NewsClient(NewsProperties properties) {
+    public NewsClient(NewsProperties properties, RestClient.Builder builder) {
         var guardian = properties.guardian();
         this.apiKey = guardian.apiKey();
-        this.restClient = RestClient.builder()
+        this.restClient = builder
                 .baseUrl(guardian.baseUrl())
                 .build();
     }
