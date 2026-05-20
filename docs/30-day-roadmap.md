@@ -1,7 +1,6 @@
 # 30-Day Roadmap
 
 This roadmap is for a junior engineer pursuing depth in **Java**, **Python**, and **TypeScript** through one shippable full-stack project. The pacing assumes **~3 hours/day, every day**.
-ye
 ## Week 1 — Java, Spring Boot, HTTP, Git foundations
 
 ### Day 1 — Repo + Spring Boot scaffold
