@@ -1,7 +1,6 @@
 # NewLens
 
-`NewLens` is a 1-month full-stack learning project. The goal is to grow a junior engineer's depth in **Java**, **Python**, and **TypeScript** by shipping a real platform end-to-end, not a tutorial clone.
-
+`NewLens` is a full-stack learning project. 
 ## What NewLens Does
 
 A user searches a keyword. The system:
