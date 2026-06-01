@@ -20,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.ResourceAccessException;
 
 @WebMvcTest(SearchController.class)
 @Import(GlobalExceptionHandler.class)
@@ -92,5 +93,15 @@ class SearchControllerTest {
         mockMvc.perform(get("/api/search").param("q", ""))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("validation_error"));
+    }
+
+    @Test
+    void searchReturns502WhenUpstreamProviderFails() throws Exception {
+        when(searchService.search("openai"))
+                .thenThrow(new ResourceAccessException("Connection refused"));
+
+        mockMvc.perform(get("/api/search").param("q", "openai"))
+                .andExpect(status().isBadGateway())
+                .andExpect(jsonPath("$.code").value("upstream_error"));
     }
 }
