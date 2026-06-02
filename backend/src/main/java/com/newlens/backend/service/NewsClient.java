@@ -24,7 +24,7 @@ public class NewsClient {
     }
 
     public GuardianRawResponse searchRaw(String query) {
-        log.info("Guardian search: q='{}'", query);
+        log.info("upstream_request provider=guardian query='{}'", query);
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/search")

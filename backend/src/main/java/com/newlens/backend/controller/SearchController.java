@@ -1,8 +1,6 @@
 package com.newlens.backend.controller;
 
 import com.newlens.backend.dto.ArticleDto;
-import com.newlens.backend.dto.GuardianRawResponse;
-import com.newlens.backend.service.NewsClient;
 import com.newlens.backend.service.SearchService;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
@@ -17,17 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class SearchController {
 
-    private final NewsClient newsClient;
     private final SearchService searchService;
 
-    public SearchController(NewsClient newsClient, SearchService searchService) {
-        this.newsClient = newsClient;
+    public SearchController(SearchService searchService) {
         this.searchService = searchService;
-    }
-
-    @GetMapping("/search-raw")
-    public GuardianRawResponse searchRaw(@RequestParam String q) {
-        return newsClient.searchRaw(q);
     }
 
     @GetMapping("/search")

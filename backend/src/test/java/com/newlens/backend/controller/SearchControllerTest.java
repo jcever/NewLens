@@ -8,9 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.newlens.backend.dto.ArticleDto;
-import com.newlens.backend.dto.GuardianRawResponse;
 import com.newlens.backend.exception.GlobalExceptionHandler;
-import com.newlens.backend.service.NewsClient;
 import com.newlens.backend.service.SearchService;
 import java.time.Instant;
 import java.util.List;
@@ -30,35 +28,7 @@ class SearchControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private NewsClient newsClient;
-
-    @MockBean
     private SearchService searchService;
-
-    @Test
-    void searchRawDelegatesToNewsClientAndReturnsItsResponse() throws Exception {
-        GuardianRawResponse fake = new GuardianRawResponse(
-                new GuardianRawResponse.GuardianResponseBody(
-                        "ok", 1, 10, 1, 1,
-                        List.of(new GuardianRawResponse.GuardianResult(
-                                "id1", "article", "tech", "Technology",
-                                "2026-05-01T10:00:00Z", "Fake Title", "https://example.com"))));
-        when(newsClient.searchRaw("openai")).thenReturn(fake);
-
-        mockMvc.perform(get("/api/search-raw").param("q", "openai"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.status").value("ok"))
-                .andExpect(jsonPath("$.response.total").value(1))
-                .andExpect(jsonPath("$.response.results[0].webTitle").value("Fake Title"));
-
-        verify(newsClient).searchRaw(eq("openai"));
-    }
-
-    @Test
-    void searchRawWithoutQueryParamReturns400() throws Exception {
-        mockMvc.perform(get("/api/search-raw"))
-                .andExpect(status().isBadRequest());
-    }
 
     @Test
     void searchReturnsMappedArticleDtoList() throws Exception {
