@@ -24,26 +24,6 @@ Each language is placed where its ecosystem actually pays off — not just to ti
 | NLP + LLM ingestion worker (introduced in Week 4) | Python | FastAPI, VADER (or HuggingFace), Anthropic/OpenAI SDK |
 | Database | — | PostgreSQL (Redis optional cache) |
 
-## Out of Scope for Month 1
-
-Cut deliberately so the month stays shippable:
-
-- Twitter / X (paid API, low learning ROI)
-- Custom web scraping (legal + anti-bot risk; official APIs only for v1)
-- Microservice meshes, distributed jobs, advanced auth (SSO/OAuth providers)
-- Heavy ML models or fine-tuning
-
-## Month 1 Outcome
-
-By the end of the month the project has:
-
-- a Spring Boot backend with users, auth, saved searches, and source fan-out
-- a Python NLP/LLM worker callable from the backend
-- a TypeScript dashboard with charts and live status updates
-- one WebSocket-driven real-time feature
-- a clean Git history with feature branches and small commits
-- a Dockerized stack and a public deploy
-
 ## Repository Structure
 
 - `backend/` — Java + Spring Boot service (gateway, auth, DB, orchestration)
