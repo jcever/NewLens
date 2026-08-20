@@ -2,6 +2,20 @@ spring:
   application:
     name: newlens-backend
 
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/newlens}
+    #    env var : the colon is a fallback marker and the following url is only used if env var is missing
+    username: ${DB_USERNAME:jingchen}
+    password: ${DB_PASSWORD:}
+
+  jpa:
+    hibernate:
+      ddl-auto: update          # dev only — production should use Flyway/Liquibase + ddl-auto=validate
+    properties:
+      hibernate:
+        format_sql: true        # print sql log
+    show-sql: true              # logs sql statement
+
 server:
   port: 8080
 
